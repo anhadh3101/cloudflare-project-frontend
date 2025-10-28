@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>My Notes</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>My Notes</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <form id="noteForm">
+      <textarea id="noteInput" placeholder="Write something..." required></textarea>
+      <button type="submit">Save</button>
+    </form>
+
+    <section id="notes"></section>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

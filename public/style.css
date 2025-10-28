@@ -1,0 +1,60 @@
+body {
+    font-family: system-ui, sans-serif;
+    background: #0b0c10;
+    color: #e7eaf2;
+    margin: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  .container.small { max-width: 360px; }
+  
+  h1 { text-align: center; }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  input, textarea {
+    background: #121419;
+    border: 1px solid #2a3348;
+    border-radius: 8px;
+    padding: 10px;
+    color: #e7eaf2;
+  }
+  
+  textarea { min-height: 120px; }
+  
+  button {
+    background: #7c9cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover { opacity: 0.9; }
+  
+  #notes { display: flex; flex-direction: column; gap: 12px; }
+  
+  .note {
+    background: #121419;
+    border: 1px solid #1e2330;
+    border-radius: 10px;
+    padding: 12px;
+    white-space: pre-wrap;
+  }
+  
+  .meta {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+  }
