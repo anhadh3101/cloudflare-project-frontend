@@ -36,7 +36,7 @@ form.onsubmit = async (e) => {
   }
 
   try {
-    const response = await fetch("/api/saveNotes", {
+    const response = await fetch("https://aifit-db-2.anhadhsran3101.workers.dev/api/saveNotes", {
       method: "POST",
       headers: { 
         "Content-Type": "application/json"
