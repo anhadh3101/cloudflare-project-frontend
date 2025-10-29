@@ -6,6 +6,8 @@ const form = document.getElementById("noteForm");
 const input = document.getElementById("noteInput");
 const list = document.getElementById("notes");
 const logoutBtn = document.getElementById("logoutBtn");
+const chatInput = document.getElementById("chatInput");
+const sendChatBtn = document.getElementById("sendChatBtn");
 const userEmail = localStorage.getItem("userEmail") || "";
 const userId = localStorage.getItem("userId") || "";
 
@@ -37,6 +39,54 @@ form.onsubmit = async (e) => {
 logoutBtn.onclick = async () => {
   await fetch("/auth/logout", { method: "POST" });
   location.href = "/index.html";
+};
+
+// Dummy chat model implementation
+async function callChatModel(message) {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // Dummy response - replace this with actual API call later
+  const responses = [
+    `Here's a helpful response to: "${message}". This is a placeholder response that will be replaced with actual AI model integration.`,
+    `Based on your question about "${message}", here's some information you might find useful. Remember to replace this with a real AI call.`,
+    `I understand you're asking about "${message}". This is a dummy implementation. The actual AI response will go here.`
+  ];
+  
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+// Function to send chat message
+async function sendChatMessage() {
+  const message = chatInput.value.trim();
+  if (!message) return;
+  
+  // Clear input
+  chatInput.value = "";
+  
+  // Get AI response
+  const response = await callChatModel(message);
+  
+  // Append AI response to textarea content
+  const currentContent = input.value.trim();
+  const separator = currentContent ? "\n\n---\n\n" : "";
+  input.value = currentContent + separator + "AI: " + response;
+  
+  // Scroll textarea to bottom
+  input.scrollTop = input.scrollHeight;
+}
+
+// Handle chat input Enter key
+chatInput.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    await sendChatMessage();
+  }
+});
+
+// Handle send button click
+sendChatBtn.onclick = async () => {
+  await sendChatMessage();
 };
 
 function escapeHTML(s) {

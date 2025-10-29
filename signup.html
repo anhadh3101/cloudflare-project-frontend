@@ -28,7 +28,22 @@
           password: password.value
         })
       });
-      if (res.ok) location.href = "/"; else alert("Error creating account");
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const userEmail = data.email || email.value.trim();
+        const userId = data.id || "";
+        try {
+          localStorage.setItem("userEmail", userEmail);
+          if (userId) localStorage.setItem("userId", userId);
+          // Ensure an initial note exists before redirect
+          await fetch(`/notes`, {
+            headers: userId ? { "x-user-id": userId } : { "x-email": userEmail }
+          });
+        } catch {}
+        location.href = "/home.html";
+      } else {
+        alert("Error creating account");
+      }
     };
   </script>
 </body>

@@ -24,7 +24,7 @@ export const onRequestGet = async ({ request }) => {
     const createRes = await fetch(`${API_BASE}/api/storeNotes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: userId, content: "Welcome to your notes!" })
+      body: JSON.stringify({ user_id: userId, content: "" })
     });
     if (!createRes.ok) {
       return new Response(await createRes.text(), { status: createRes.status, headers: { "Content-Type": "application/json" } });

@@ -7,15 +7,21 @@
   <link rel="stylesheet" href="style.css" />
   </head>
 <body>
-  <div class="container">
+  <div class="container full-height">
     <header>
       <h1>My Fitness</h1>
-      <button id="logoutBtn">Logout</button>
+      <button id="logoutBtn">Sign Out</button>
     </header>
 
     <form id="noteForm">
       <textarea id="noteInput" placeholder="Write something..." required></textarea>
-      <button type="submit">Save</button>
+      <div class="bottom-actions">
+        <div class="chat-wrapper">
+          <input type="text" id="chatInput" placeholder="Ask AI anything..." class="chat-input" />
+          <button type="button" id="sendChatBtn" class="send-btn">Send</button>
+        </div>
+        <button type="submit">Save</button>
+      </div>
     </form>
 
     <section id="notes"></section>
