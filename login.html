@@ -2,50 +2,25 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Login</title>
+  <title>My Notes</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 <body>
-  <div class="container small">
-    <h1>Login</h1>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Login</button>
+  <div class="container">
+    <header>
+      <h1>My Notes</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <form id="noteForm">
+      <textarea id="noteInput" placeholder="Write something..." required></textarea>
+      <button type="submit">Save</button>
     </form>
-    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+
+    <section id="notes"></section>
   </div>
 
-  <script>
-    loginForm.onsubmit = async (e) => {
-      e.preventDefault();
-      const res = await fetch("/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.value.trim(),
-          password: password.value
-        })
-      });
-      if (res.ok) {
-        const data = await res.json().catch(() => []);
-        const user = Array.isArray(data) && data.length ? data[0] : null;
-        const userEmail = (user && user.email) ? user.email : email.value.trim();
-        const userId = user && user.id ? user.id : "";
-        try {
-          localStorage.setItem("userEmail", userEmail);
-          if (userId) localStorage.setItem("userId", userId);
-          // Ensure an initial note exists before redirect
-          await fetch(`/notes`, {
-            headers: userId ? { "x-user-id": userId } : { "x-email": userEmail }
-          });
-        } catch {}
-        location.href = "/";
-      } else {
-        alert("Invalid credentials");
-      }
-    };
-  </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
