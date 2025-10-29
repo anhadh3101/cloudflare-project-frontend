@@ -67,19 +67,40 @@ logoutBtn.onclick = async () => {
   location.href = "/index.html";
 };
 
-// Dummy chat model implementation
+// Trigger workflow to get AI response
 async function callChatModel(message) {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+  const workflowUrl = "https://weathered-wave-1a88.anhadhsran3101.workers.dev/";
   
-  // Dummy response - replace this with actual API call later
-  const responses = [
-    `Here's a helpful response to: "${message}". This is a placeholder response that will be replaced with actual AI model integration.`,
-    `Based on your question about "${message}", here's some information you might find useful. Remember to replace this with a real AI call.`,
-    `I understand you're asking about "${message}". This is a dummy implementation. The actual AI response will go here.`
-  ];
-  
-  return responses[Math.floor(Math.random() * responses.length)];
+  try {
+    // Trigger workflow
+    const response = await fetch(workflowUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: userEmail,
+        metadata: {},
+        query: message
+      })
+    });
+    
+    if (!response.ok) throw new Error(`Failed: ${response.status}`);
+    const { id } = await response.json();
+    
+    // Wait for workflow to complete
+    for (let i = 0; i < 20; i++) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const statusRes = await fetch(`${workflowUrl}?instanceId=${id}`);
+      const status = await statusRes.json();
+      if (status.details?.status === "complete") {
+        return "AI response has been saved to your notes. Please refresh to see the update.";
+      }
+    }
+    
+    return "Request is processing. Your notes will be updated shortly.";
+  } catch (error) {
+    console.error("Error:", error);
+    return `Error: Could not process your request. Please try again.`;
+  }
 }
 
 // Function to send chat message
@@ -90,16 +111,22 @@ async function sendChatMessage() {
   // Clear input
   chatInput.value = "";
   
-  // Get AI response
+  // Get AI response from workflow
   const response = await callChatModel(message);
   
-  // Append AI response to textarea content
+  // Show response in textarea
   const currentContent = input.value.trim();
   const separator = currentContent ? "\n\n---\n\n" : "";
   input.value = currentContent + separator + "AI: " + response;
   
   // Scroll textarea to bottom
   input.scrollTop = input.scrollHeight;
+  
+  // Reload notes to get updated content from database after workflow completes
+  setTimeout(() => {
+    loadNotes();
+    console.log("Notes refreshed after AI response");
+  }, 2500);
 }
 
 // Handle chat input Enter key
