@@ -24,16 +24,42 @@ async function loadNotes() {
 form.onsubmit = async (e) => {
   e.preventDefault();
   const content = input.value.trim();
-  if (!content) return;
-  await fetch("/notes", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    // Pass email via header for backend lookup
-    ...(userEmail ? { headers: { "Content-Type": "application/json", "x-email": userEmail } } : {}),
-    body: JSON.stringify({ content, ...(userEmail ? {} : { email: userEmail }) })
-  });
-  input.value = "";
-  await loadNotes();
+  if (!content) {
+    alert("Please enter some content before saving");
+    return;
+  }
+  
+  if (!userId) {
+    alert("Error: User ID not found. Please log in again.");
+    location.href = "/index.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/saveNotes", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ 
+        userId: userId,
+        content: content
+      })
+    });
+
+    if (response.ok) {
+      const result = await response.json().catch(() => ({}));
+      console.log("Notes saved successfully:", result);
+      // Optional: Show success feedback
+      // You can add a toast notification here if desired
+    } else {
+      const error = await response.text().catch(() => "Failed to save notes");
+      alert(`Error saving notes: ${error}`);
+    }
+  } catch (error) {
+    console.error("Error saving notes:", error);
+    alert("Failed to save notes. Please try again.");
+  }
 };
 
 logoutBtn.onclick = async () => {

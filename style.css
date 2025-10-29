@@ -10,6 +10,11 @@ body {
   overflow: hidden;
 }
 
+/* Allow scrolling for small containers (login/signup) */
+body:has(.container.small) {
+  overflow-y: auto;
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -30,6 +35,37 @@ body {
   max-width: 360px; 
   height: auto;
   min-height: 100vh;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+/* Override form styles for small containers */
+.container.small form {
+  flex: 0 1 auto;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.container.small h1 {
+  margin-bottom: 32px;
+}
+
+/* Style links and text in small containers */
+.container.small p {
+  text-align: center;
+  margin-top: 20px;
+  color: #a0aec0;
+}
+
+.container.small a {
+  color: #7c9cff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.container.small a:hover {
+  color: #a78bfa;
+  text-decoration: underline;
 }
 
 header {
@@ -163,6 +199,12 @@ input:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(124, 156, 255, 0.1);
 }
 
+/* Ensure inputs in small containers look good */
+.container.small input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 textarea {
   min-height: 120px;
   resize: none;
@@ -234,6 +276,21 @@ button[type="submit"] {
   margin-top: 16px;
   align-self: flex-end;
   flex-shrink: 0;
+}
+
+/* Override submit button for small containers */
+.container.small button[type="submit"] {
+  align-self: stretch;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Hide elements that shouldn't appear in small containers */
+.container.small header,
+.container.small .bottom-actions,
+.container.small .chat-wrapper,
+.container.small #notes {
+  display: none;
 }
 
 button[type="submit"]:hover {
