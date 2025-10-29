@@ -4,7 +4,7 @@ export const onRequestPost = async ({ request }) => {
     
     // The URL of your API Worker (replace this with your deployed Worker endpoint)
     // Pass email as query parameter
-    const API_URL = `https://aifit-db-2.anhadhsran3101.workers.dev/api/getUser?email=${encodeURIComponent(email)}`;
+    const API_URL = `https://aifit-db-2.anhadhsran3101.workers.dev/api/getUser?email=${email}`;
   
     // Forward the request to the Worker
     const res = await fetch(API_URL, {

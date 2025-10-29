@@ -6,9 +6,10 @@ const form = document.getElementById("noteForm");
 const input = document.getElementById("noteInput");
 const list = document.getElementById("notes");
 const logoutBtn = document.getElementById("logoutBtn");
+const userEmail = localStorage.getItem("userEmail") || "";
 
 async function loadNotes() {
-  const res = await fetch("/notes");
+  const res = await fetch("/notes", { headers: userEmail ? { "x-email": userEmail } : {} });
   if (res.status === 401) return location.href = "/login.html";
   const notes = await res.json();
   list.innerHTML = "";
@@ -30,7 +31,9 @@ form.onsubmit = async (e) => {
   await fetch("/notes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content })
+    // Pass email via header for backend lookup
+    ...(userEmail ? { headers: { "Content-Type": "application/json", "x-email": userEmail } } : {}),
+    body: JSON.stringify({ content, ...(userEmail ? {} : { email: userEmail }) })
   });
   input.value = "";
   await loadNotes();

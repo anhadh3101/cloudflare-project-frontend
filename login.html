@@ -28,7 +28,19 @@
           password: password.value
         })
       });
-      if (res.ok) location.href = "/"; else alert("Invalid credentials");
+      if (res.ok) {
+        const userEmail = email.value.trim();
+        try {
+          localStorage.setItem("userEmail", userEmail);
+          // Ensure an initial note exists before redirect
+          await fetch(`/notes?ensure=true`, {
+            headers: { "x-email": userEmail }
+          });
+        } catch {}
+        location.href = "/";
+      } else {
+        alert("Invalid credentials");
+      }
     };
   </script>
 </body>
