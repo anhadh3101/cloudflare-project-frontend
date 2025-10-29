@@ -1,6 +1,6 @@
 // redirect to login if not logged in
 const me = await fetch("/auth/me").then(r => r.ok ? r.json() : null).catch(()=>null);
-if (!me) location.href = "/login.html";
+// if (!me) location.href = "/login.html";
 
 const form = document.getElementById("noteForm");
 const input = document.getElementById("noteInput");
