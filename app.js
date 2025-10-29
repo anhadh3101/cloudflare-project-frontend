@@ -42,7 +42,7 @@ form.onsubmit = async (e) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ 
-        userId: userId,
+        user_id: userId,
         content: content
       })
     });
