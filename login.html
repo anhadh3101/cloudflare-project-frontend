@@ -29,14 +29,16 @@
         })
       });
       if (res.ok) {
-        const userEmail = res.json().email;
-        const userId = res.json().id;
+        const data = await res.json().catch(() => []);
+        const user = Array.isArray(data) && data.length ? data[0] : null;
+        const userEmail = (user && user.email) ? user.email : email.value.trim();
+        const userId = user && user.id ? user.id : "";
         try {
           localStorage.setItem("userEmail", userEmail);
-          localStorage.setItem("userId", userId);
+          if (userId) localStorage.setItem("userId", userId);
           // Ensure an initial note exists before redirect
           await fetch(`/notes`, {
-            headers: { "x-email": userEmail }
+            headers: userId ? { "x-user-id": userId } : { "x-email": userEmail }
           });
         } catch {}
         location.href = "/";
