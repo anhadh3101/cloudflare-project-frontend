@@ -29,11 +29,13 @@
         })
       });
       if (res.ok) {
-        const userEmail = email.value.trim();
+        const userEmail = res.json().email;
+        const userId = res.json().id;
         try {
           localStorage.setItem("userEmail", userEmail);
+          localStorage.setItem("userId", userId);
           // Ensure an initial note exists before redirect
-          await fetch(`/notes?ensure=true`, {
+          await fetch(`/notes`, {
             headers: { "x-email": userEmail }
           });
         } catch {}

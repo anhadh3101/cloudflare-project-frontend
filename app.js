@@ -7,9 +7,11 @@ const input = document.getElementById("noteInput");
 const list = document.getElementById("notes");
 const logoutBtn = document.getElementById("logoutBtn");
 const userEmail = localStorage.getItem("userEmail") || "";
+const userId = localStorage.getItem("userId") || "";
 
 async function loadNotes() {
-  const res = await fetch("/notes", { headers: userEmail ? { "x-email": userEmail } : {} });
+  const url = userId ? `/notes?user_id=${encodeURIComponent(userId)}` : "/notes";
+  const res = await fetch(url, { headers: userId ? { "x-user-id": userId } : {} });
   if (res.status === 401) return location.href = "/login.html";
   const notes = await res.json();
   list.innerHTML = "";
